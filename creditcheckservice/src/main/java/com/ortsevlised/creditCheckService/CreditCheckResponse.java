@@ -15,9 +15,8 @@ public class CreditCheckResponse {
         this.score = score;
     }
 
-
-
     public enum  Score {
-        HIGH
+        HIGH,
+        LOW
     }
 }

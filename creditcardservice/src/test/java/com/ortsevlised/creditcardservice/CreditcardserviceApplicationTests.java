@@ -13,13 +13,14 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
 @AutoConfigureMockMvc
 
-@AutoConfigureStubRunner( ids = "com.ortsevlised:creditCheckService:+:stubs:8080", stubsMode = StubRunnerProperties.StubsMode.LOCAL)
+@AutoConfigureStubRunner(ids = "com.ortsevlised:creditCheckService:+:stubs:8080", stubsMode = StubRunnerProperties.StubsMode.LOCAL)
 public class CreditcardserviceApplicationTests {
 
     @Autowired
@@ -36,7 +37,30 @@ public class CreditcardserviceApplicationTests {
                         "}"
                 )).
                 andDo(print())
-                .andExpect(status().isOk());
+                .andExpect(status().isOk())
+                .andExpect(content()
+                        .json("{" +
+                                "\"status\":\"GRANTED\"" +
+                                "}"));
+
+    }
+
+    @Test
+    public void shouldDenyApplicationWhenCreditScoreIsLow() throws Exception {
+        mockMvc.perform(MockMvcRequestBuilders.
+                post("/credit-card-applications")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content("{" +
+                        "\"citizenNumber\":4444," +
+                        "\"cardType\":\"GOLD\"" +
+                        "}"
+                )).
+                andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(content()
+                        .json("{" +
+                                "\"status\":\"DENIED\"" +
+                                "}"));
 
     }
 }
