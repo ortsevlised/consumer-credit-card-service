@@ -1,7 +1,9 @@
 package com.ortsevlised.creditCheckService;
 
 public class CreditCheckRequest {
-    public int getCitizenNumber() {
+    private int citizenNumber;
+
+      public int getCitizenNumber() {
         return citizenNumber;
     }
 
@@ -9,6 +11,5 @@ public class CreditCheckRequest {
         this.citizenNumber = citizenNumber;
     }
 
-    private int citizenNumber;
 
 }
