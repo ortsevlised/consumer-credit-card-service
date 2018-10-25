@@ -1,7 +1,5 @@
 package com.ortsevlised.creditCheckService;
 
-import java.util.UUID;
-
 public class CreditCheckResponse {
 
     private Score score;

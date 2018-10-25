@@ -72,6 +72,11 @@
                 <extensions>true</extensions>
                 <configuration>
                     <baseClassForTests>com.ortsevlised.creditCheckService.BaseContractTest</baseClassForTests>
+                    <contractsMode>LOCAL</contractsMode>
+                    <contractDependency>
+                        <groupId>com.ortsevlised</groupId>
+                        <artifactId>contracts</artifactId>
+                    </contractDependency>
                 </configuration>
             </plugin>
         </plugins>
