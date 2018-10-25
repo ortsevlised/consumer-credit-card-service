@@ -27,16 +27,23 @@ public class CreditCardApplicationsController {
     @PostMapping("/credit-card-applications")
     public ApplyForCreditCardResponse applyForCreditCard(@RequestBody final ApplyForCreditCardRequest applyForCreditCardRequest) {
         final int citizenNumber = applyForCreditCardRequest.getCitizenNumber();
+
         String uri = UriComponentsBuilder.fromHttpUrl(creditCheckServiceBaseUrl).path("credit-scores").toUriString();
-        CreditCheckResponse creditCheckResponse = restTemplate.postForObject(uri, new CreditCheckRequest(citizenNumber), CreditCheckResponse.class);
+
+        CreditCheckRequest creditCheckRequest = new CreditCheckRequest(citizenNumber);
+        CreditCheckResponse creditCheckResponse = restTemplate.postForObject(uri, creditCheckRequest, CreditCheckResponse.class);
         final CreditCheckResponse.Score score = creditCheckResponse.getScore();
         final String uuid = creditCheckResponse.getUuid();
 
+        if (!creditCheckRequest.getUuid().equals(creditCheckResponse.getUuid())) {
+            throw new RuntimeException("UUID is wrong");
+        }
+
         if (score == HIGH && applyForCreditCardRequest.getCardType() == GOLD) {
-            return new ApplyForCreditCardResponse(GRANTED,uuid);
+            return new ApplyForCreditCardResponse(GRANTED, uuid);
 
         } else if (score == LOW && applyForCreditCardRequest.getCardType() == GOLD) {
-            return new ApplyForCreditCardResponse(DENIED,uuid);
+            return new ApplyForCreditCardResponse(DENIED, uuid);
         }
         throw new RuntimeException("Card and score not yet implemented");
     }

@@ -5,15 +5,17 @@ import java.util.UUID;
 public class CreditCheckResponse {
 
     private Score score;
-    public CreditCheckResponse(Score score) {
-        this.score=score;
+    private final String uuid;
+
+    public CreditCheckResponse(Score score, String uuid) {
+        this.score = score;
+        this.uuid = uuid;
     }
 
     public String getUuid() {
         return uuid;
     }
 
-    private final String uuid = UUID.randomUUID().toString();
 
     public Score getScore() {
         return score;
@@ -23,7 +25,7 @@ public class CreditCheckResponse {
         this.score = score;
     }
 
-    public enum  Score {
+    public enum Score {
         HIGH,
         LOW
     }

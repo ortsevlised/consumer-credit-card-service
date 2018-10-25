@@ -6,8 +6,9 @@ Contract.make {
         url '/credit-scores'
         body(
                 "citizenNumber": 1234,
-                "requestDate": anyDate()
-        )
+                "requestDate": anyDate(),
+                "uuid": $(consumer(anyUuid()), producer("d1b8242f-f755-403d-9f36-f4d5fdb109b2")
+                ))
 
         headers {
             contentType applicationJson()
@@ -15,9 +16,9 @@ Contract.make {
     }
     response {
         status 200
-        body (
+        body(
                 "score": "HIGH",
-                "uuid": $(consumer("d1b8242f-f755-403d-9f36-f4d5fdb109b2"), producer(anyUuid()))
+                "uuid": $(consumer(fromRequest().body('$.uuid')), producer("d1b8242f-f755-403d-9f36-f4d5fdb109b2"))
         )
         headers {
             contentType applicationJson()

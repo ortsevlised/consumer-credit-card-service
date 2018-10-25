@@ -13,8 +13,7 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -38,11 +37,8 @@ public class CreditcardserviceApplicationTests {
                 )).
                 andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(content()
-                        .json("{" +
-                                "\"status\":\"GRANTED\"," +
-                                "\"uuid\":\"d1b8242f-f755-403d-9f36-f4d5fdb109b2\"" +
-                                "}"))
+                .andExpect(jsonPath("$.status").value("GRANTED"))
+                .andExpect(jsonPath("$.uuid").exists())
                 .andExpect(content().contentTypeCompatibleWith(APPLICATION_JSON));
 
     }
@@ -59,11 +55,8 @@ public class CreditcardserviceApplicationTests {
                 )).
                 andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(content()
-                        .json("{" +
-                                "\"status\":\"DENIEDg\"," +
-                                "\"uuid\":\"d1b8242f-f755-403d-9f36-f4d5fdb109b2\"" +
-                                "}"))
+                .andExpect(jsonPath("$.status").value("DENIED"))
+                .andExpect(jsonPath("$.uuid").exists())
                 .andExpect(content().contentTypeCompatibleWith(APPLICATION_JSON));
     }
 }
